@@ -109,6 +109,8 @@ export default function App() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
 
+  const dataAtualizacao = "24/03/2026"; // Data configurada manualmente
+
   async function handleLogin() {
     if (password === SENHA_REAL) {
       setIsLoggedIn(true);
@@ -118,17 +120,12 @@ export default function App() {
     }
   }
 
-  // --- BUSCA GLOBAL CORRIGIDA ---
   const displayItems = useMemo(() => {
     const termoBusca = search.trim().toLowerCase();
-
-    // Se NÃO estiver buscando, filtra pela aba
     if (!termoBusca) {
       const categoriaAtiva = databaseSecreto.find(cat => cat.id === activeTab);
       return categoriaAtiva ? categoriaAtiva.items : [];
     }
-
-    // Se ESTIVER buscando, ignora abas e procura em TUDO
     const resultados = [];
     databaseSecreto.forEach(categoria => {
       categoria.items.forEach(item => {
@@ -136,9 +133,7 @@ export default function App() {
         const notas = item.notes.toLowerCase();
         const fone = item.phone.replace(/\D/g, '');
         const buscaFone = termoBusca.replace(/\D/g, '');
-
         if (nome.includes(termoBusca) || notas.includes(termoBusca) || (buscaFone && fone.includes(buscaFone))) {
-          // Evitar duplicatas (mesmo contato em categorias diferentes)
           if (!resultados.find(r => r.phone === item.phone && r.name === item.name)) {
             resultados.push(item);
           }
@@ -166,14 +161,7 @@ export default function App() {
               <div style={styles.loginCard}>
                 <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
                 <div style={styles.inputWrap}>
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
-                    placeholder="Senha" 
-                    style={styles.input} 
-                  />
+                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
                   <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
                 </div>
                 {error && <div style={styles.errorText}>{error}</div>}
@@ -194,16 +182,11 @@ export default function App() {
         <header style={styles.heroPanel}>
           <div style={styles.heroGrid}>
             <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
-              <div style={styles.heroPanelSmall}>OPERADOR: VITOR • STATUS: ONLINE</div>
+              <div style={styles.heroPanelSmall}>ÚLTIMA ATUALIZAÇÃO: {dataAtualizacao}</div>
               <h1 style={styles.heroPanelTitle}>Catálogo <span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             <div style={styles.searchCard}>
-              <input 
-                value={search} 
-                onChange={(e) => setSearch(e.target.value)} 
-                placeholder="🔎 Digite o nome ou telefone..." 
-                style={styles.input} 
-              />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Digite o nome ou telefone..." style={styles.input} />
             </div>
           </div>
         </header>
@@ -275,7 +258,7 @@ const getStyles = (isMobile) => ({
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
   heroPanel: { marginBottom: 30, width: "100%" },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
-  heroPanelSmall: { color: "#64748b", fontSize: 11, fontWeight: 800, letterSpacing: "2px", marginBottom: 10 },
+  heroPanelSmall: { color: "#64748b", fontSize: 10, fontWeight: 800, letterSpacing: "2px", marginBottom: 10 },
   heroPanelTitle: { margin: 0, fontSize: isMobile ? "32px" : "44px", fontWeight: 800, letterSpacing: "-1px" },
   searchCard: { flex: isMobile ? "1 1 100%" : "0 1 400px" },
   tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
