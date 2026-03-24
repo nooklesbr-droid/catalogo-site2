@@ -21,7 +21,7 @@ const databaseSecreto = [
     subtitle: "Atacado geral",
     icon: "🛍️",
     items: [
-      { name: "CAMILaaaoxejaA", phone: "+595 987 434342", notes: "Iphones Swap e Perfumes" },
+      { name: "CAMILA", phone: "+595 987 434342", notes: "Iphones Swap e Perfumes" },
       { name: "JOANA", phone: "+595 975 521432", notes: "Perfumes" },
       { name: "LA PETISQUERA PARAGUAI", phone: "+595 982 464403", notes: "Perfumes" },
       { name: "LOJA PERFUMES PARAGUAI", phone: "+595 981 365607", notes: "Geral" },
@@ -36,10 +36,10 @@ const databaseSecreto = [
     ],
   },
   {
-    id: "fernando-lojas",
+    id: "farmacias-fernando",
     type: "shop",
     title: "Farmácias (Indicação Fernando)",
-    subtitle: "Recomendações estratégicas",
+    subtitle: "Recomendações",
     icon: "🏬",
     items: [
       { name: "DILICOO", phone: "+595 975 852277", notes: "Indicação Fernando" },
@@ -51,14 +51,14 @@ const databaseSecreto = [
     id: "farmacias-brasil-garantia",
     type: "shop",
     title: "Farmácias (Entrega Brasil com Garantia)",
-    subtitle: "Contatos com logística garantida",
+    subtitle: "Logística garantida",
     icon: "🇧🇷",
     items: [
       { name: "PHARMA SPACEFIT", phone: "+595 983 099034", notes: "Entrega garantida" },
       { name: "CINDY (FARMAUTIL)", phone: "+595 995 664468", notes: "Entrega garantida" },
-      { name: "CINDY (FARMAUTIL) RESERVA", phone: "+595 973 172188", notes: "Número secundário" },
-      { name: "MARIZA (SPACE FIT)", phone: "+595 986 263110", notes: "Logística integrada" },
-      { name: "TRIUNFO (FARMÁCIA)", phone: "+595 993 329379", notes: "Garantia e Freteiro" },
+      { name: "CINDY RESERVA", phone: "+595 973 172188", notes: "Número secundário" },
+      { name: "MARIZA SPACE FIT", phone: "+595 986 263110", notes: "Logística integrada" },
+      { name: "TRIUNFO", phone: "+595 993 329379", notes: "Garantia e Freteiro" },
     ],
   },
   {
@@ -69,20 +69,16 @@ const databaseSecreto = [
     icon: "💉",
     items: [
       { name: "TRIUNFO (ANABOL)", phone: "+595 993 329379", notes: "Especialista" },
-      { name: "MARIZA (SPACE FIT)", phone: "+595 986 263110", notes: "Hormônios e performance" },
       { name: "KRATOS AZEVEDO", phone: "+595 992 601025", notes: "Especialista" },
       { name: "GABRIEL STAR COMPANY", phone: "+595 987 459535", notes: "Performance" },
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
-      { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
-      { name: "CINTHIA (EL KILLO)", phone: "+595 994 812498", notes: "Especialista" },
-      { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
   },
   {
     id: "estoque-sp",
     type: "shop",
     title: "Estoque SP",
-    subtitle: "Pronta entrega em São Paulo",
+    subtitle: "Pronta entrega",
     icon: "📦",
     items: [
       { name: "RODRIGO ZPHARMA", phone: "+595 973 183828", notes: "Estoque em São Paulo" },
@@ -92,12 +88,11 @@ const databaseSecreto = [
     id: "fernando-freteiros",
     type: "shipping",
     title: "Freteiros (Indicação Fernando)",
-    subtitle: "Logística recomendada",
+    subtitle: "Logística",
     icon: "🚚",
     items: [
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
       { name: "JU RIBEIRO", phone: "+595 993 045009", notes: "Indicação Fernando" },
-      { name: "ANTÔNIO", phone: "+1 (407) 574-1627", notes: "Indicação Fernando" },
       { name: "JOHNNY", phone: "+55 45 9904-7330", notes: "Indicação Fernando" },
     ],
   },
@@ -157,16 +152,14 @@ export default function App() {
   if (!dadosDoCatalogo) {
     return (
       <div style={styles.page}>
-        <div style={styles.loginCenterContainer}> {/* CONTAINER PRINCIPAL DE CENTRALIZAÇÃO */}
-          <div style={styles.loginContentBox}> {/* BOX FLEX QUE SEGURA OS DOIS LADOS */}
-            
+        <div style={styles.loginCenterContainer}>
+          <div style={styles.loginContentBox}>
             <div style={styles.loginLeft}>
               <div style={styles.loginPill}>🛡️ AMBIENTE CRIPTOGRAFADO</div>
               <div style={styles.loginSmallHero}>ACESSO RESTRITO • 2026</div>
               <h1 style={styles.loginTitleHero}>Catálogo<br /><span style={styles.textGradientHero}>VIP</span></h1>
               <p style={styles.loginDescHero}>Base de dados exclusiva para fornecedores e logística estratégica.</p>
             </div>
-            
             <div style={styles.loginRight}>
               <div style={styles.loginCard}>
                 <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
@@ -178,7 +171,6 @@ export default function App() {
                 <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
               </div>
             </div>
-
           </div>
         </div>
       </div>
@@ -192,7 +184,7 @@ export default function App() {
       <div style={styles.appContainer}>
         <header style={styles.heroPanel}>
           <div style={styles.heroGrid}>
-            <div>
+            <div style={{ textAlign: isMobile ? 'center' : 'left' }}>
               <div style={styles.heroPanelSmall}>OPERADOR: VITOR • STATUS: ONLINE</div>
               <h1 style={styles.heroPanelTitle}>Catálogo <span style={styles.textGradientHero}>VIP</span></h1>
             </div>
@@ -213,12 +205,20 @@ export default function App() {
             <section style={styles.sectionCard}>
               <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>{currentSection.title}</h2><span style={styles.recordsPill}>{filteredItems.length} REGISTROS</span></div>
               <div style={styles.tableWrap}>
-                {!isMobile && (<div style={styles.tableHead}><div>NOME</div><div style={{ textAlign: "center" }}>WHATSAPP</div><div>NOTAS</div></div>)}
+                {!isMobile && (
+                  <div style={styles.tableHead}>
+                    <div style={{ flex: 0.5 }}>ID</div>
+                    <div style={{ flex: 2 }}>NOME</div>
+                    <div style={{ flex: 1.5, textAlign: "center" }}>WHATSAPP</div>
+                    <div style={{ flex: 2 }}>NOTAS</div>
+                  </div>
+                )}
                 {filteredItems.map((item, index) => (
                   <div key={item.name + index} style={styles.tableRowBody}>
-                    <div style={styles.mobileLabelWrap}><div style={styles.mobileLabel}>NOME</div><div style={styles.nameCell}><span style={styles.idx}>#0{index + 1}</span> {item.name}</div></div>
-                    <div style={styles.mobileLabelWrap}><div style={styles.mobileLabel}>CONTATO</div><div style={styles.phoneCell}><a href={`https://wa.me/${item.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" style={styles.whatsappLink}>{item.phone}</a></div></div>
-                    <div style={styles.mobileLabelWrap}><div style={styles.mobileLabel}>NOTAS</div><div style={styles.noteCell}>{item.notes}</div></div>
+                    <div style={{...styles.cell, flex: 0.5}}><span style={styles.idx}>#0{index + 1}</span></div>
+                    <div style={{...styles.cell, flex: 2}}><div style={styles.mobileLabel}>NOME</div><div style={styles.nameCell}>{item.name}</div></div>
+                    <div style={{...styles.cell, flex: 1.5, justifyContent: "center"}}><div style={styles.mobileLabel}>CONTATO</div><a href={`https://wa.me/${item.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" style={styles.whatsappLink}>{item.phone}</a></div>
+                    <div style={{...styles.cell, flex: 2}}><div style={styles.mobileLabel}>NOTAS</div><div style={styles.noteCell}>{item.notes}</div></div>
                   </div>
                 ))}
               </div>
@@ -233,51 +233,17 @@ export default function App() {
 }
 
 const getStyles = (isMobile) => ({
-  page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', Roboto, sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column" },
-  
-  // ESTRUTURA DE CENTRALIZAÇÃO ABSOLUTA
-  loginCenterContainer: {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: "100%",
-    padding: "20px",
-    boxSizing: "border-box"
-  },
-  loginContentBox: {
-    display: "flex",
-    flexDirection: isMobile ? "column" : "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: isMobile ? "40px" : "100px", // Espaço exato entre texto e card
-    width: "100%",
-    maxWidth: "1200px"
-  },
-
-  loginLeft: { 
-    flex: 1,
-    display: "flex", 
-    flexDirection: "column", 
-    alignItems: isMobile ? "center" : "flex-start", 
-    textAlign: isMobile ? "center" : "left",
-    maxWidth: "500px"
-  },
+  page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column" },
+  loginCenterContainer: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "20px", boxSizing: "border-box" },
+  loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", gap: isMobile ? "40px" : "100px", width: "100%", maxWidth: "1200px" },
+  loginLeft: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", textAlign: isMobile ? "center" : "left", maxWidth: "500px" },
   loginPill: { display: "inline-flex", alignItems: "center", gap: 8, padding: "8px 16px", borderRadius: "8px", background: "rgba(0, 122, 204, 0.1)", color: "#00b4d8", fontSize: 11, fontWeight: 800, border: "1px solid rgba(0, 122, 204, 0.2)", marginBottom: "30px" },
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
   loginDescHero: { color: "#94a3b8", fontSize: "18px", lineHeight: 1.6, marginTop: 25 },
-
-  loginRight: { 
-    flex: 1,
-    display: "flex", 
-    justifyContent: isMobile ? "center" : "center", // Card sempre no centro da sua metade
-    width: "100%",
-    maxWidth: "440px"
-  },
+  loginRight: { flex: 1, display: "flex", justifyContent: "center", width: "100%", maxWidth: "440px" },
   loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" },
-  
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 35 },
   lockBox: { fontSize: "32px" },
   loginTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#fff" },
@@ -286,34 +252,32 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
-  
   appContainer: { width: "100%", maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "20px" : "40px" },
   heroPanel: { marginBottom: 30 },
-  heroGrid: { display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20, alignItems: "center" },
+  heroGrid: { display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20, alignItems: "end" },
   heroPanelSmall: { color: "#64748b", fontSize: 11, fontWeight: 800, letterSpacing: "2px", marginBottom: 10 },
   heroPanelTitle: { margin: 0, fontSize: isMobile ? "32px" : "44px", fontWeight: 800, letterSpacing: "-1px" },
   searchCard: { width: "100%" },
-  tabNavContainer: { display: "flex", flexDirection: "column", gap: "15px", marginBottom: "35px" },
+  tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px" },
   tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
-  divider: { height: "1px", background: "linear-gradient(to right, transparent, rgba(0, 122, 204, 0.4), transparent)", margin: "5px 0" },
-  tabButton: { padding: "10px 16px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: isMobile ? "11px" : "13px", transition: "0.2s" },
+  divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
+  tabButton: { padding: "12px 18px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
   tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
   mainContent: { display: "grid", gap: 15 },
-  sectionCard: { background: "rgba(30, 41, 59, 0.2)", borderRadius: 30, padding: isMobile ? "20px" : "30px", border: "1px solid rgba(255, 255, 255, 0.05)" },
-  sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 15 },
-  sectionTitle: { margin: 0, fontSize: "20px", fontWeight: 700, color: "#fff" },
+  sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)" },
+  sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
+  sectionTitle: { margin: 0, fontSize: "22px", fontWeight: 700, color: "#fff" },
   recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
-  tableWrap: { background: "rgba(30, 41, 59, 0.2)", borderRadius: 24, overflow: "hidden", border: "1px solid rgba(255, 255, 255, 0.05)" },
-  tableHead: { display: "grid", gridTemplateColumns: "1.2fr 1fr 1.5fr", padding: "20px 30px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 10, letterSpacing: "1px" },
-  tableRowBody: { display: isMobile ? "flex" : "grid", flexDirection: "column", gridTemplateColumns: "1.2fr 1fr 1.5fr", padding: isMobile ? "20px" : "18px 30px", borderTop: "1px solid rgba(255, 255, 255, 0.05)", gap: isMobile ? 12 : 20, alignItems: "center" },
-  mobileLabelWrap: { display: isMobile ? "flex" : "block", justifyContent: "space-between", width: "100%" },
-  mobileLabel: { display: isMobile ? "block" : "none", color: "#007acc", fontSize: 9, fontWeight: 900 },
-  idx: { color: "#00b4d8", marginRight: 8, opacity: 0.5 },
-  nameCell: { color: "#fff", fontWeight: 600 },
-  phoneCell: { color: "#00b4d8" },
-  whatsappLink: { textDecoration: "none", color: "inherit", background: "rgba(0, 180, 216, 0.1)", padding: "6px 12px", borderRadius: "10px", fontWeight: 600, fontSize: "14px", border: "1px solid rgba(0, 180, 216, 0.2)" },
-  noteCell: { color: "#94a3b8", fontSize: 13, fontStyle: "italic" },
-  emptyStateContainer: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 20px", textAlign: "center" },
+  tableWrap: { width: "100%", display: "flex", flexDirection: "column" },
+  tableHead: { display: "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
+  tableRowBody: { display: "flex", flexDirection: isMobile ? "column" : "row", padding: "15px 25px", borderBottom: "1px solid rgba(255, 255, 255, 0.03)", gap: isMobile ? 12 : 0, alignItems: "center" },
+  cell: { display: "flex", alignItems: "center", width: "100%" },
+  mobileLabel: { display: isMobile ? "block" : "none", color: "#007acc", fontSize: 9, fontWeight: 900, marginRight: 10, minWidth: "70px" },
+  idx: { color: "#00b4d8", opacity: 0.5, fontWeight: 700 },
+  nameCell: { color: "#fff", fontWeight: 600, fontSize: "15px" },
+  whatsappLink: { textDecoration: "none", color: "#00b4d8", background: "rgba(0, 180, 216, 0.1)", padding: "8px 15px", borderRadius: "8px", fontWeight: 700, fontSize: "14px", border: "1px solid rgba(0, 180, 216, 0.2)" },
+  noteCell: { color: "#94a3b8", fontSize: "13px", fontStyle: "italic" },
+  emptyStateContainer: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", textAlign: "center" },
   emptyIcon: { fontSize: "50px", marginBottom: "15px", opacity: 0.4 },
-  emptyTitle: { color: "#fff", fontSize: "20px", margin: "0 0 8px 0" },
+  emptyTitle: { color: "#fff", fontSize: "20px", margin: 0 }
 });
