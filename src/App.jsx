@@ -72,6 +72,10 @@ const databaseSecreto = [
       { name: "KRATOS AZEVEDO", phone: "+595 992 601025", notes: "Especialista" },
       { name: "GABRIEL STAR COMPANY", phone: "+595 987 459535", notes: "Performance" },
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
+      { name: "ALEE ATACADO", phone: "+595 994 998866", notes: "Hormônios e performance" },
+      { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
+      { name: "CINTHIA (EL KILLO)", phone: "+595 994 812498", notes: "Especialista" },
+      { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
   },
   {
@@ -88,7 +92,7 @@ const databaseSecreto = [
     id: "fernando-freteiros",
     type: "shipping",
     title: "Freteiros (Indicação Fernando)",
-    subtitle: "Logística",
+    subtitle: "Logística recomendada",
     icon: "🚚",
     items: [
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
