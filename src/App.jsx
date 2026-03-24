@@ -18,8 +18,6 @@ const databaseSecreto = [
     id: "fornecedores-py-geral",
     type: "shop",
     title: "Fornecedores Paraguai",
-    subtitle: "Atacado geral",
-    icon: "🛍️",
     items: [
       { name: "CAMILA", phone: "+595 987 434342", notes: "Iphones Swap e Perfumes" },
       { name: "JOANA", phone: "+595 975 521432", notes: "Perfumes" },
@@ -39,8 +37,6 @@ const databaseSecreto = [
     id: "farmacias-fernando",
     type: "shop",
     title: "Farmácias (Indicação Fernando)",
-    subtitle: "Recomendações",
-    icon: "🏬",
     items: [
       { name: "DILICOO", phone: "+595 975 852277", notes: "Indicação Fernando" },
       { name: "ALEE ATACADO", phone: "+595 994 998866", notes: "Indicação Fernando" },
@@ -51,8 +47,6 @@ const databaseSecreto = [
     id: "farmacias-brasil-garantia",
     type: "shop",
     title: "Farmácias (Entrega Brasil com Garantia)",
-    subtitle: "Logística garantida",
-    icon: "🇧🇷",
     items: [
       { name: "PHARMA SPACEFIT", phone: "+595 983 099034", notes: "Entrega garantida" },
       { name: "CINDY (FARMAUTIL)", phone: "+595 995 664468", notes: "Entrega garantida" },
@@ -65,8 +59,6 @@ const databaseSecreto = [
     id: "farmacias-anabolizantes",
     type: "shop",
     title: "Anabolizantes",
-    subtitle: "Hormônios e performance",
-    icon: "💉",
     items: [
       { name: "TRIUNFO (ANABOL)", phone: "+595 993 329379", notes: "Especialista" },
       { name: "KRATOS AZEVEDO", phone: "+595 992 601025", notes: "Especialista" },
@@ -82,8 +74,6 @@ const databaseSecreto = [
     id: "estoque-sp",
     type: "shop",
     title: "Estoque SP",
-    subtitle: "Pronta entrega",
-    icon: "📦",
     items: [
       { name: "RODRIGO ZPHARMA", phone: "+595 973 183828", notes: "Estoque em São Paulo" },
     ],
@@ -92,8 +82,6 @@ const databaseSecreto = [
     id: "fernando-freteiros",
     type: "shipping",
     title: "Freteiros (Indicação Fernando)",
-    subtitle: "Logística recomendada",
-    icon: "🚚",
     items: [
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
       { name: "JU RIBEIRO", phone: "+595 993 045009", notes: "Indicação Fernando" },
@@ -105,8 +93,6 @@ const databaseSecreto = [
     id: "freteiros-porcentagem",
     type: "shipping",
     title: "Freteiros % e Garantia",
-    subtitle: "Logística por %",
-    icon: "🛡️",
     items: [
       { name: "DENISE", phone: "+55 11 95722-2547", notes: "Garantia até SP" },
       { name: "SONIA", phone: "+595 992 907185", notes: "Garantia até SP" },
@@ -121,7 +107,7 @@ const removerAcentos = (texto) => {
 
 export default function App() {
   const isMobile = useIsMobile(); 
-  const [dadosDoCatalogo, setDadosDoCatalogo] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [search, setSearch] = useState("");
@@ -130,37 +116,49 @@ export default function App() {
 
   async function handleLogin() {
     if (password === SENHA_REAL) {
-      setDadosDoCatalogo(databaseSecreto);
+      setIsLoggedIn(true);
       setError("");
     } else {
       setError("Código de acesso inválido.");
     }
   }
 
-  // BUSCA CORRIGIDA
-  const filteredItems = useMemo(() => {
-    if (!dadosDoCatalogo || !activeTab) return [];
-    
-    const section = databaseSecreto.find(s => s.id === activeTab);
-    if (!section) return [];
-    
+  // BUSCA GLOBAL: Procura em todas as categorias se houver texto na busca
+  const searchResults = useMemo(() => {
     const buscaLimpa = removerAcentos(search.trim());
-    if (!buscaLimpa) return section.items;
+    if (!buscaLimpa) return null;
 
-    return section.items.filter((item) => {
-      const nomeMatch = removerAcentos(item.name).includes(buscaLimpa);
-      const notasMatch = removerAcentos(item.notes).includes(buscaLimpa);
-      const foneMatch = item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''));
-      return nomeMatch || notasMatch || foneMatch;
+    const allItems = [];
+    databaseSecreto.forEach(category => {
+      category.items.forEach(item => {
+        const nomeMatch = removerAcentos(item.name).includes(buscaLimpa);
+        const notasMatch = removerAcentos(item.notes).includes(buscaLimpa);
+        const foneMatch = item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''));
+        
+        if (nomeMatch || notasMatch || foneMatch) {
+          // Evita duplicatas se o mesmo item estiver em categorias diferentes
+          if (!allItems.find(existing => existing.phone === item.phone && existing.name === item.name)) {
+            allItems.push(item);
+          }
+        }
+      });
     });
-  }, [search, dadosDoCatalogo, activeTab]);
+    return allItems;
+  }, [search]);
 
-  const shops = useMemo(() => databaseSecreto.filter(d => d.type === "shop"), []);
-  const shipping = useMemo(() => databaseSecreto.filter(d => d.type === "shipping"), []);
+  // ITENS DA CATEGORIA: Usado apenas se a busca estiver vazia
+  const categoryItems = useMemo(() => {
+    if (!activeTab || search.trim()) return [];
+    const section = databaseSecreto.find(s => s.id === activeTab);
+    return section ? section.items : [];
+  }, [activeTab, search]);
+
+  const shops = databaseSecreto.filter(d => d.type === "shop");
+  const shipping = databaseSecreto.filter(d => d.type === "shipping");
 
   const styles = getStyles(isMobile);
 
-  if (!dadosDoCatalogo) {
+  if (!isLoggedIn) {
     return (
       <div style={styles.page}>
         <div style={styles.loginCenterContainer}>
@@ -186,7 +184,9 @@ export default function App() {
     );
   }
 
-  const currentSection = activeTab ? databaseSecreto.find(s => s.id === activeTab) : null;
+  const isSearching = !!search.trim();
+  const displayItems = isSearching ? searchResults : categoryItems;
+  const currentTitle = isSearching ? "Resultados da Pesquisa Global" : (activeTab ? databaseSecreto.find(s => s.id === activeTab).title : "");
 
   return (
     <div style={styles.page}>
@@ -198,21 +198,21 @@ export default function App() {
               <h1 style={styles.heroPanelTitle}>Catálogo <span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             <div style={styles.searchCard}>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Filtrar resultados..." style={styles.input} />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Pesquisar em todos os contatos..." style={styles.input} />
             </div>
           </div>
         </header>
 
         <nav style={styles.tabNavContainer}>
-          <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+          <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => {setActiveTab(s.id); setSearch("");}} style={{...styles.tabButton, ...(activeTab === s.id && !isSearching ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
           <div style={styles.divider} />
-          <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+          <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => {setActiveTab(s.id); setSearch("");}} style={{...styles.tabButton, ...(activeTab === s.id && !isSearching ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
         </nav>
 
         <main style={styles.mainContent}>
-          {activeTab ? (
+          {(activeTab || isSearching) ? (
             <section style={styles.sectionCard}>
-              <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>{currentSection.title}</h2><span style={styles.recordsPill}>{filteredItems.length} REGISTROS</span></div>
+              <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>{currentTitle}</h2><span style={styles.recordsPill}>{displayItems.length} REGISTROS</span></div>
               <div style={styles.tableWrap}>
                 <div style={styles.tableHead}>
                   <div style={{ flex: 0.4 }}>ID</div>
@@ -220,7 +220,7 @@ export default function App() {
                   <div style={{ flex: 1.2, textAlign: "center" }}>WHATSAPP</div>
                   <div style={{ flex: 1.6 }}>NOTAS</div>
                 </div>
-                {filteredItems.map((item, index) => (
+                {displayItems.map((item, index) => (
                   <div key={item.name + index} style={styles.tableRowBody}>
                     <div style={{...styles.cell, flex: 0.4}}><span style={styles.idx}>#0{index + 1}</span></div>
                     <div style={{...styles.cell, flex: 1.8}}><div style={styles.nameCell}>{item.name}</div></div>
@@ -228,13 +228,13 @@ export default function App() {
                     <div style={{...styles.cell, flex: 1.6}}><div style={styles.noteCell}>{item.notes}</div></div>
                   </div>
                 ))}
-                {filteredItems.length === 0 && (
-                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado para esta busca.</div>
+                {displayItems.length === 0 && (
+                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado.</div>
                 )}
               </div>
             </section>
           ) : (
-            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria acima</h2></div>
+            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria acima ou pesquise</h2></div>
           )}
         </main>
       </div>
@@ -269,12 +269,12 @@ const getStyles = (isMobile) => ({
   tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
   tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
   divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
-  tabButton: { padding: "12px 18px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
+  tabButton: { padding: "10px 16px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
   tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
   mainContent: { width: "100%" },
   sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)", width: "100%", boxSizing: "border-box" },
   sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
-  sectionTitle: { margin: 0, fontSize: "22px", fontWeight: 700, color: "#fff" },
+  sectionTitle: { margin: 0, fontSize: "20px", fontWeight: 700, color: "#fff" },
   recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
   tableWrap: { width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" },
   tableHead: { display: isMobile ? "none" : "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
