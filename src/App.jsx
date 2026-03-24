@@ -137,21 +137,26 @@ export default function App() {
     }
   }
 
-  const shops = useMemo(() => dadosDoCatalogo?.filter(d => d.type === "shop") || [], [dadosDoCatalogo]);
-  const shipping = useMemo(() => dadosDoCatalogo?.filter(d => d.type === "shipping") || [], [dadosDoCatalogo]);
-
+  // BUSCA CORRIGIDA
   const filteredItems = useMemo(() => {
     if (!dadosDoCatalogo || !activeTab) return [];
-    const section = dadosDoCatalogo.find(s => s.id === activeTab);
+    
+    const section = databaseSecreto.find(s => s.id === activeTab);
     if (!section) return [];
+    
     const buscaLimpa = removerAcentos(search.trim());
     if (!buscaLimpa) return section.items;
-    return section.items.filter((item) => 
-      removerAcentos(item.name).includes(buscaLimpa) || 
-      removerAcentos(item.notes).includes(buscaLimpa) ||
-      item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''))
-    );
+
+    return section.items.filter((item) => {
+      const nomeMatch = removerAcentos(item.name).includes(buscaLimpa);
+      const notasMatch = removerAcentos(item.notes).includes(buscaLimpa);
+      const foneMatch = item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''));
+      return nomeMatch || notasMatch || foneMatch;
+    });
   }, [search, dadosDoCatalogo, activeTab]);
+
+  const shops = useMemo(() => databaseSecreto.filter(d => d.type === "shop"), []);
+  const shipping = useMemo(() => databaseSecreto.filter(d => d.type === "shipping"), []);
 
   const styles = getStyles(isMobile);
 
@@ -181,7 +186,7 @@ export default function App() {
     );
   }
 
-  const currentSection = activeTab ? dadosDoCatalogo.find(s => s.id === activeTab) : null;
+  const currentSection = activeTab ? databaseSecreto.find(s => s.id === activeTab) : null;
 
   return (
     <div style={styles.page}>
@@ -193,7 +198,7 @@ export default function App() {
               <h1 style={styles.heroPanelTitle}>Catálogo <span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             <div style={styles.searchCard}>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Filtrar banco de dados..." style={styles.input} />
+              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Filtrar resultados..." style={styles.input} />
             </div>
           </div>
         </header>
@@ -223,6 +228,9 @@ export default function App() {
                     <div style={{...styles.cell, flex: 1.6}}><div style={styles.noteCell}>{item.notes}</div></div>
                   </div>
                 ))}
+                {filteredItems.length === 0 && (
+                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado para esta busca.</div>
+                )}
               </div>
             </section>
           ) : (
