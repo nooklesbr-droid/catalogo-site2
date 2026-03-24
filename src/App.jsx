@@ -123,12 +123,20 @@ export default function App() {
     }
   }
 
-  // BUSCA GLOBAL: Procura em todas as categorias se houver texto na busca
-  const searchResults = useMemo(() => {
-    const buscaLimpa = removerAcentos(search.trim());
-    if (!buscaLimpa) return null;
+  // --- LÓGICA DE FILTRAGEM GLOBAL ---
+  const isSearching = search.trim().length > 0;
 
-    const allItems = [];
+  const displayItems = useMemo(() => {
+    if (!isSearching) {
+      // Se não está buscando, mostra itens da aba ativa
+      const section = databaseSecreto.find(s => s.id === activeTab);
+      return section ? section.items : [];
+    }
+
+    // Se está buscando, ignora a aba e procura em TUDO
+    const buscaLimpa = removerAcentos(search.trim());
+    const resultadosSet = new Map(); // Map para evitar duplicatas pelo telefone
+
     databaseSecreto.forEach(category => {
       category.items.forEach(item => {
         const nomeMatch = removerAcentos(item.name).includes(buscaLimpa);
@@ -136,22 +144,13 @@ export default function App() {
         const foneMatch = item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''));
         
         if (nomeMatch || notasMatch || foneMatch) {
-          // Evita duplicatas se o mesmo item estiver em categorias diferentes
-          if (!allItems.find(existing => existing.phone === item.phone && existing.name === item.name)) {
-            allItems.push(item);
-          }
+          resultadosSet.set(item.phone + item.name, item);
         }
       });
     });
-    return allItems;
-  }, [search]);
 
-  // ITENS DA CATEGORIA: Usado apenas se a busca estiver vazia
-  const categoryItems = useMemo(() => {
-    if (!activeTab || search.trim()) return [];
-    const section = databaseSecreto.find(s => s.id === activeTab);
-    return section ? section.items : [];
-  }, [activeTab, search]);
+    return Array.from(resultadosSet.values());
+  }, [search, activeTab, isSearching]);
 
   const shops = databaseSecreto.filter(d => d.type === "shop");
   const shipping = databaseSecreto.filter(d => d.type === "shipping");
@@ -184,10 +183,6 @@ export default function App() {
     );
   }
 
-  const isSearching = !!search.trim();
-  const displayItems = isSearching ? searchResults : categoryItems;
-  const currentTitle = isSearching ? "Resultados da Pesquisa Global" : (activeTab ? databaseSecreto.find(s => s.id === activeTab).title : "");
-
   return (
     <div style={styles.page}>
       <div style={styles.appContainer}>
@@ -198,21 +193,34 @@ export default function App() {
               <h1 style={styles.heroPanelTitle}>Catálogo <span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             <div style={styles.searchCard}>
-              <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="🔎 Pesquisar em todos os contatos..." style={styles.input} />
+              <input 
+                value={search} 
+                onChange={(e) => setSearch(e.target.value)} 
+                placeholder="🔎 Digite o nome para buscar..." 
+                style={styles.input} 
+              />
             </div>
           </div>
         </header>
 
-        <nav style={styles.tabNavContainer}>
-          <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => {setActiveTab(s.id); setSearch("");}} style={{...styles.tabButton, ...(activeTab === s.id && !isSearching ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
-          <div style={styles.divider} />
-          <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => {setActiveTab(s.id); setSearch("");}} style={{...styles.tabButton, ...(activeTab === s.id && !isSearching ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
-        </nav>
+        {/* AS ABAS SÓ APARECEM SE NÃO HOUVER BUSCA */}
+        {!isSearching && (
+          <nav style={styles.tabNavContainer}>
+            <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+            <div style={styles.divider} />
+            <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+          </nav>
+        )}
 
         <main style={styles.mainContent}>
-          {(activeTab || isSearching) ? (
+          {isSearching || activeTab ? (
             <section style={styles.sectionCard}>
-              <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>{currentTitle}</h2><span style={styles.recordsPill}>{displayItems.length} REGISTROS</span></div>
+              <div style={styles.sectionHeader}>
+                <h2 style={styles.sectionTitle}>
+                  {isSearching ? "🔍 Resultados da Busca" : databaseSecreto.find(s => s.id === activeTab)?.title}
+                </h2>
+                <span style={styles.recordsPill}>{displayItems.length} ENCONTRADOS</span>
+              </div>
               <div style={styles.tableWrap}>
                 <div style={styles.tableHead}>
                   <div style={{ flex: 0.4 }}>ID</div>
@@ -229,12 +237,12 @@ export default function App() {
                   </div>
                 ))}
                 {displayItems.length === 0 && (
-                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado.</div>
+                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado para "{search}".</div>
                 )}
               </div>
             </section>
           ) : (
-            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria acima ou pesquise</h2></div>
+            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria ou faça uma busca</h2></div>
           )}
         </main>
       </div>
@@ -269,12 +277,12 @@ const getStyles = (isMobile) => ({
   tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
   tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
   divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
-  tabButton: { padding: "10px 16px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
+  tabButton: { padding: "12px 18px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
   tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
   mainContent: { width: "100%" },
   sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)", width: "100%", boxSizing: "border-box" },
   sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
-  sectionTitle: { margin: 0, fontSize: "20px", fontWeight: 700, color: "#fff" },
+  sectionTitle: { margin: 0, fontSize: "22px", fontWeight: 700, color: "#fff" },
   recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
   tableWrap: { width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" },
   tableHead: { display: isMobile ? "none" : "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
