@@ -1,8 +1,5 @@
 import { useMemo, useState, useEffect } from "react";
 
-// ==========================================
-// Hook para detectar celular
-// ==========================================
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
@@ -14,13 +11,9 @@ function useIsMobile() {
   return isMobile;
 }
 
-// ==========================================
-// ⚠️ BANCO DE DADOS (DATABASE)
-// ==========================================
-const SENHA_REAL = "2801"; // SENHA ATUALIZADA
+const SENHA_REAL = "2801";
 
 const databaseSecreto = [
-  // --- GRUPO 1: LOJAS E FORNECEDORES (TIPO: shop) ---
   {
     id: "fornecedores-py-geral",
     type: "shop",
@@ -79,9 +72,6 @@ const databaseSecreto = [
       { name: "KRATOS AZEVEDO", phone: "+595 992 601025", notes: "Especialista" },
       { name: "GABRIEL STAR COMPANY", phone: "+595 987 459535", notes: "Performance" },
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
-      { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
-      { name: "CINTHIA (EL KILLO)", phone: "+595 994 812498", notes: "Especialista" },
-      { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
   },
   {
@@ -94,12 +84,11 @@ const databaseSecreto = [
       { name: "RODRIGO ZPHARMA", phone: "+595 973 183828", notes: "Estoque em São Paulo" },
     ],
   },
-  // --- GRUPO 2: LOGÍSTICA (TIPO: shipping) ---
   {
     id: "fernando-freteiros",
     type: "shipping",
     title: "Freteiros (Indicação Fernando)",
-    subtitle: "Logística recomendada",
+    subtitle: "Logística",
     icon: "🚚",
     items: [
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
@@ -136,7 +125,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState(null);
 
   async function handleLogin() {
-    // Validação estrita da senha
     if (password === SENHA_REAL) {
       setDadosDoCatalogo(databaseSecreto);
       setError("");
@@ -176,14 +164,7 @@ export default function App() {
               <div style={styles.loginCard}>
                 <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
                 <div style={styles.inputWrap}>
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
-                    placeholder="Senha" 
-                    style={styles.input} 
-                  />
+                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
                   <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
                 </div>
                 {error && <div style={styles.errorText}>{error}</div>}
@@ -216,7 +197,7 @@ export default function App() {
         <nav style={styles.tabNavContainer}>
           <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
           <div style={styles.divider} />
-          <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === section.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+          <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
         </nav>
 
         <main style={styles.mainContent}>
