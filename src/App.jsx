@@ -21,7 +21,7 @@ const databaseSecreto = [
     subtitle: "Atacado geral",
     icon: "🛍️",
     items: [
-      { name: "CAMILaaaA", phone: "+595 987 434342", notes: "Iphones Swap e Perfumes" },
+      { name: "CAMILaaaoxejaA", phone: "+595 987 434342", notes: "Iphones Swap e Perfumes" },
       { name: "JOANA", phone: "+595 975 521432", notes: "Perfumes" },
       { name: "LA PETISQUERA PARAGUAI", phone: "+595 982 464403", notes: "Perfumes" },
       { name: "LOJA PERFUMES PARAGUAI", phone: "+595 981 365607", notes: "Geral" },
