@@ -205,20 +205,18 @@ export default function App() {
             <section style={styles.sectionCard}>
               <div style={styles.sectionHeader}><h2 style={styles.sectionTitle}>{currentSection.title}</h2><span style={styles.recordsPill}>{filteredItems.length} REGISTROS</span></div>
               <div style={styles.tableWrap}>
-                {!isMobile && (
-                  <div style={styles.tableHead}>
-                    <div style={{ flex: 0.5 }}>ID</div>
-                    <div style={{ flex: 2 }}>NOME</div>
-                    <div style={{ flex: 1.5, textAlign: "center" }}>WHATSAPP</div>
-                    <div style={{ flex: 2 }}>NOTAS</div>
-                  </div>
-                )}
+                <div style={styles.tableHead}>
+                  <div style={{ flex: 0.4 }}>ID</div>
+                  <div style={{ flex: 1.8 }}>NOME</div>
+                  <div style={{ flex: 1.2, textAlign: "center" }}>WHATSAPP</div>
+                  <div style={{ flex: 1.6 }}>NOTAS</div>
+                </div>
                 {filteredItems.map((item, index) => (
                   <div key={item.name + index} style={styles.tableRowBody}>
-                    <div style={{...styles.cell, flex: 0.5}}><span style={styles.idx}>#0{index + 1}</span></div>
-                    <div style={{...styles.cell, flex: 2}}><div style={styles.mobileLabel}>NOME</div><div style={styles.nameCell}>{item.name}</div></div>
-                    <div style={{...styles.cell, flex: 1.5, justifyContent: "center"}}><div style={styles.mobileLabel}>CONTATO</div><a href={`https://wa.me/${item.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" style={styles.whatsappLink}>{item.phone}</a></div>
-                    <div style={{...styles.cell, flex: 2}}><div style={styles.mobileLabel}>NOTAS</div><div style={styles.noteCell}>{item.notes}</div></div>
+                    <div style={{...styles.cell, flex: 0.4}}><span style={styles.idx}>#0{index + 1}</span></div>
+                    <div style={{...styles.cell, flex: 1.8}}><div style={styles.nameCell}>{item.name}</div></div>
+                    <div style={{...styles.cell, flex: 1.2, justifyContent: "center"}}><a href={`https://wa.me/${item.phone.replace(/\D/g, '')}`} target="_blank" rel="noreferrer" style={styles.whatsappLink}>{item.phone}</a></div>
+                    <div style={{...styles.cell, flex: 1.6}}><div style={styles.noteCell}>{item.notes}</div></div>
                   </div>
                 ))}
               </div>
@@ -233,7 +231,16 @@ export default function App() {
 }
 
 const getStyles = (isMobile) => ({
-  page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column" },
+  page: { 
+    minHeight: "100vh", 
+    color: "#e2e8f0", 
+    fontFamily: "'Segoe UI', sans-serif", 
+    background: "#0a0f16", 
+    backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", 
+    display: "flex", 
+    flexDirection: "column",
+    boxSizing: "border-box" 
+  },
   loginCenterContainer: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "20px", boxSizing: "border-box" },
   loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", gap: isMobile ? "40px" : "100px", width: "100%", maxWidth: "1200px" },
   loginLeft: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", textAlign: isMobile ? "center" : "left", maxWidth: "500px" },
@@ -252,31 +259,66 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
-  appContainer: { width: "100%", maxWidth: "1200px", margin: "0 auto", padding: isMobile ? "20px" : "40px" },
-  heroPanel: { marginBottom: 30 },
-  heroGrid: { display: "grid", gridTemplateColumns: isMobile ? "1fr" : "1fr 1fr", gap: 20, alignItems: "end" },
+  
+  // CONTAINER DO APP CORRIGIDO
+  appContainer: { 
+    width: "95%", 
+    maxWidth: "1100px", 
+    margin: "0 auto", 
+    padding: isMobile ? "20px 0" : "40px 0",
+    boxSizing: "border-box"
+  },
+  heroPanel: { marginBottom: 30, width: "100%" },
+  heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
   heroPanelSmall: { color: "#64748b", fontSize: 11, fontWeight: 800, letterSpacing: "2px", marginBottom: 10 },
   heroPanelTitle: { margin: 0, fontSize: isMobile ? "32px" : "44px", fontWeight: 800, letterSpacing: "-1px" },
-  searchCard: { width: "100%" },
-  tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px" },
+  searchCard: { flex: isMobile ? "1 1 100%" : "0 1 400px" },
+  
+  tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
   tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
   divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
   tabButton: { padding: "12px 18px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
   tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
-  mainContent: { display: "grid", gap: 15 },
-  sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)" },
+  
+  mainContent: { width: "100%" },
+  sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)", width: "100%", boxSizing: "border-box" },
   sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
   sectionTitle: { margin: 0, fontSize: "22px", fontWeight: 700, color: "#fff" },
   recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
-  tableWrap: { width: "100%", display: "flex", flexDirection: "column" },
-  tableHead: { display: "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
-  tableRowBody: { display: "flex", flexDirection: isMobile ? "column" : "row", padding: "15px 25px", borderBottom: "1px solid rgba(255, 255, 255, 0.03)", gap: isMobile ? 12 : 0, alignItems: "center" },
-  cell: { display: "flex", alignItems: "center", width: "100%" },
-  mobileLabel: { display: isMobile ? "block" : "none", color: "#007acc", fontSize: 9, fontWeight: 900, marginRight: 10, minWidth: "70px" },
+  
+  // TABELA CORRIGIDA PARA NÃO VAZAR
+  tableWrap: { 
+    width: "100%", 
+    display: "flex", 
+    flexDirection: "column",
+    overflow: "hidden" // Impede que o conteúdo interno empurre o card
+  },
+  tableHead: { 
+    display: isMobile ? "none" : "flex", 
+    padding: "15px 25px", 
+    background: "rgba(255,255,255,0.02)", 
+    color: "#00b4d8", 
+    fontWeight: 800, 
+    fontSize: 11, 
+    letterSpacing: "1px", 
+    borderRadius: "12px", 
+    marginBottom: "10px" 
+  },
+  tableRowBody: { 
+    display: "flex", 
+    flexDirection: isMobile ? "column" : "row", 
+    padding: isMobile ? "20px" : "15px 25px", 
+    borderBottom: "1px solid rgba(255, 255, 255, 0.03)", 
+    gap: isMobile ? 12 : 0, 
+    alignItems: "center",
+    width: "100%",
+    boxSizing: "border-box"
+  },
+  cell: { display: "flex", alignItems: "center", overflow: "hidden" },
   idx: { color: "#00b4d8", opacity: 0.5, fontWeight: 700 },
-  nameCell: { color: "#fff", fontWeight: 600, fontSize: "15px" },
-  whatsappLink: { textDecoration: "none", color: "#00b4d8", background: "rgba(0, 180, 216, 0.1)", padding: "8px 15px", borderRadius: "8px", fontWeight: 700, fontSize: "14px", border: "1px solid rgba(0, 180, 216, 0.2)" },
-  noteCell: { color: "#94a3b8", fontSize: "13px", fontStyle: "italic" },
+  nameCell: { color: "#fff", fontWeight: 600, fontSize: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
+  whatsappLink: { textDecoration: "none", color: "#00b4d8", background: "rgba(0, 180, 216, 0.1)", padding: "8px 15px", borderRadius: "8px", fontWeight: 700, fontSize: "14px", border: "1px solid rgba(0, 180, 216, 0.2)", whiteSpace: "nowrap" },
+  noteCell: { color: "#94a3b8", fontSize: 13, fontStyle: "italic", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
   emptyStateContainer: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", textAlign: "center" },
   emptyIcon: { fontSize: "50px", marginBottom: "15px", opacity: 0.4 },
   emptyTitle: { color: "#fff", fontSize: "20px", margin: 0 }
