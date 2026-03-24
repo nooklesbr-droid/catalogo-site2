@@ -11,7 +11,7 @@ function useIsMobile() {
   return isMobile;
 }
 
-const SENHA_REAL = "1234";
+const SENHA_REAL = "2801";
 
 const databaseSecreto = [
   {
