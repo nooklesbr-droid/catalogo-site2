@@ -100,11 +100,6 @@ const databaseSecreto = [
   }
 ];
 
-const removerAcentos = (texto) => {
-  if (!texto) return "";
-  return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-};
-
 export default function App() {
   const isMobile = useIsMobile(); 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -123,34 +118,35 @@ export default function App() {
     }
   }
 
-  // --- LÓGICA DE FILTRAGEM GLOBAL ---
-  const isSearching = search.trim().length > 0;
-
+  // --- BUSCA GLOBAL CORRIGIDA ---
   const displayItems = useMemo(() => {
-    if (!isSearching) {
-      // Se não está buscando, mostra itens da aba ativa
-      const section = databaseSecreto.find(s => s.id === activeTab);
-      return section ? section.items : [];
+    const termoBusca = search.trim().toLowerCase();
+
+    // Se NÃO estiver buscando, filtra pela aba
+    if (!termoBusca) {
+      const categoriaAtiva = databaseSecreto.find(cat => cat.id === activeTab);
+      return categoriaAtiva ? categoriaAtiva.items : [];
     }
 
-    // Se está buscando, ignora a aba e procura em TUDO
-    const buscaLimpa = removerAcentos(search.trim());
-    const resultadosSet = new Map(); // Map para evitar duplicatas pelo telefone
+    // Se ESTIVER buscando, ignora abas e procura em TUDO
+    const resultados = [];
+    databaseSecreto.forEach(categoria => {
+      categoria.items.forEach(item => {
+        const nome = item.name.toLowerCase();
+        const notas = item.notes.toLowerCase();
+        const fone = item.phone.replace(/\D/g, '');
+        const buscaFone = termoBusca.replace(/\D/g, '');
 
-    databaseSecreto.forEach(category => {
-      category.items.forEach(item => {
-        const nomeMatch = removerAcentos(item.name).includes(buscaLimpa);
-        const notasMatch = removerAcentos(item.notes).includes(buscaLimpa);
-        const foneMatch = item.phone.replace(/\D/g, '').includes(buscaLimpa.replace(/\D/g, ''));
-        
-        if (nomeMatch || notasMatch || foneMatch) {
-          resultadosSet.set(item.phone + item.name, item);
+        if (nome.includes(termoBusca) || notas.includes(termoBusca) || (buscaFone && fone.includes(buscaFone))) {
+          // Evitar duplicatas (mesmo contato em categorias diferentes)
+          if (!resultados.find(r => r.phone === item.phone && r.name === item.name)) {
+            resultados.push(item);
+          }
         }
       });
     });
-
-    return Array.from(resultadosSet.values());
-  }, [search, activeTab, isSearching]);
+    return resultados;
+  }, [search, activeTab]);
 
   const shops = databaseSecreto.filter(d => d.type === "shop");
   const shipping = databaseSecreto.filter(d => d.type === "shipping");
@@ -170,7 +166,14 @@ export default function App() {
               <div style={styles.loginCard}>
                 <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
                 <div style={styles.inputWrap}>
-                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
+                    placeholder="Senha" 
+                    style={styles.input} 
+                  />
                   <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
                 </div>
                 {error && <div style={styles.errorText}>{error}</div>}
@@ -182,6 +185,8 @@ export default function App() {
       </div>
     );
   }
+
+  const isSearching = search.trim().length > 0;
 
   return (
     <div style={styles.page}>
@@ -196,14 +201,13 @@ export default function App() {
               <input 
                 value={search} 
                 onChange={(e) => setSearch(e.target.value)} 
-                placeholder="🔎 Digite o nome para buscar..." 
+                placeholder="🔎 Digite o nome ou telefone..." 
                 style={styles.input} 
               />
             </div>
           </div>
         </header>
 
-        {/* AS ABAS SÓ APARECEM SE NÃO HOUVER BUSCA */}
         {!isSearching && (
           <nav style={styles.tabNavContainer}>
             <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
@@ -213,13 +217,13 @@ export default function App() {
         )}
 
         <main style={styles.mainContent}>
-          {isSearching || activeTab ? (
+          {(activeTab || isSearching) ? (
             <section style={styles.sectionCard}>
               <div style={styles.sectionHeader}>
                 <h2 style={styles.sectionTitle}>
-                  {isSearching ? "🔍 Resultados da Busca" : databaseSecreto.find(s => s.id === activeTab)?.title}
+                  {isSearching ? "🔍 Resultados da Pesquisa" : databaseSecreto.find(s => s.id === activeTab)?.title}
                 </h2>
-                <span style={styles.recordsPill}>{displayItems.length} ENCONTRADOS</span>
+                <span style={styles.recordsPill}>{displayItems.length} REGISTROS</span>
               </div>
               <div style={styles.tableWrap}>
                 <div style={styles.tableHead}>
@@ -242,7 +246,7 @@ export default function App() {
               </div>
             </section>
           ) : (
-            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria ou faça uma busca</h2></div>
+            <div style={styles.emptyStateContainer}><div style={styles.emptyIcon}>📂</div><h2 style={styles.emptyTitle}>Selecione uma categoria ou pesquise</h2></div>
           )}
         </main>
       </div>
@@ -277,12 +281,12 @@ const getStyles = (isMobile) => ({
   tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
   tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
   divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
-  tabButton: { padding: "12px 18px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
+  tabButton: { padding: "10px 16px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
   tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
   mainContent: { width: "100%" },
   sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)", width: "100%", boxSizing: "border-box" },
   sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
-  sectionTitle: { margin: 0, fontSize: "22px", fontWeight: 700, color: "#fff" },
+  sectionTitle: { margin: 0, fontSize: "20px", fontWeight: 700, color: "#fff" },
   recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
   tableWrap: { width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" },
   tableHead: { display: isMobile ? "none" : "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
