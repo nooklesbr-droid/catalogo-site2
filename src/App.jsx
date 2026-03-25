@@ -157,8 +157,8 @@ export default function App() {
               <div style={styles.loginSmallHero}>ACESSO RESTRITO • 2026</div>
               <h1 style={styles.loginTitleHero}>Catálogo<br /><span style={styles.textGradientHero}>VIP</span></h1>
             </div>
+            {/* AJUSTE NA COLUNA DA DIREITA PARA ALINHAMENTO VERTICAL CENTRALIZADO */}
             <div style={styles.loginRight}>
-              <div style={{ width: "100%", maxWidth: "440px" }}>
                 <div style={styles.loginCard}>
                   <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
                   <div style={styles.inputWrap}>
@@ -169,18 +169,14 @@ export default function App() {
                   <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
                 </div>
 
-                {/* BOTÃO FORA DO QUADRO E AZUL */}
-                <div style={{ marginTop: "40px", display: "flex", justifyContent: "center" }}>
-                  <a 
-                    href="https://calculadorapeps.onrender.com/" 
-                    target="_blank" 
-                    rel="noreferrer" 
-                    style={styles.calcButtonLogin}
-                  >
-                    CALCULADORA DE DOSAGEM
-                  </a>
-                </div>
-              </div>
+                <a 
+                  href="https://calculadorapeps.onrender.com/" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  style={styles.calcButtonLogin}
+                >
+                  CALCULADORA DE DOSAGEM
+                </a>
             </div>
           </div>
         </div>
@@ -259,8 +255,11 @@ const getStyles = (isMobile) => ({
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  loginRight: { flex: 1, display: "flex", justifyContent: "center", width: "100%" },
-  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" },
+  
+  // LOGIN RIGHT: Agora garante que tudo dentro dele seja uma coluna centralizada
+  loginRight: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: "440px" },
+  
+  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)", marginBottom: "30px" },
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 35 },
   lockBox: { fontSize: "32px" },
   loginTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#fff" },
@@ -270,9 +269,9 @@ const getStyles = (isMobile) => ({
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
   
-  // NOVO ESTILO: BOTÃO DA CALCULADORA FORA DO CARD
+  // BOTÃO DA CALCULADORA: Removi margens fixas estranhas para ele se alinhar ao centro do loginRight
   calcButtonLogin: { 
-    display: "inline-flex", 
+    display: "flex", 
     alignItems: "center", 
     justifyContent: "center", 
     padding: "0 30px",
@@ -287,7 +286,8 @@ const getStyles = (isMobile) => ({
     letterSpacing: "2px", 
     textDecoration: "none",
     transition: "0.3s",
-    boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
+    boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
+    textAlign: "center"
   },
 
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
