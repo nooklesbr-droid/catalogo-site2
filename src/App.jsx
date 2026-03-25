@@ -109,7 +109,7 @@ export default function App() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
 
-  const dataAtualizacao = "24/03/2026"; // Data configurada manualmente
+  const dataAtualizacao = "24/03/2026";
 
   async function handleLogin() {
     if (password === SENHA_REAL) {
@@ -165,7 +165,20 @@ export default function App() {
                   <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
                 </div>
                 {error && <div style={styles.errorText}>{error}</div>}
+                
+                {/* BOTÃO PRINCIPAL */}
                 <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
+                
+                {/* BOTÃO DA CALCULADORA ADICIONADO ABAIXO */}
+                <a 
+                  href="https://calculadorapeps.onrender.com/" 
+                  target="_blank" 
+                  rel="noreferrer" 
+                  style={styles.calcButton}
+                >
+                  CALCULADORA DE DOSAGEM
+                </a>
+                
               </div>
             </div>
           </div>
@@ -255,6 +268,27 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
+  
+  // ESTILO DO BOTÃO DA CALCULADORA
+  calcButton: { 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", 
+    width: "100%", 
+    height: 50, 
+    marginTop: "12px", 
+    borderRadius: 16, 
+    background: "rgba(255, 255, 255, 0.05)", 
+    color: "#94a3b8", 
+    fontWeight: 600, 
+    cursor: "pointer", 
+    border: "1px solid rgba(255, 255, 255, 0.1)", 
+    fontSize: 12, 
+    letterSpacing: "1px", 
+    textDecoration: "none",
+    transition: "0.2s"
+  },
+
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
   heroPanel: { marginBottom: 30, width: "100%" },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
