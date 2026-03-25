@@ -158,27 +158,28 @@ export default function App() {
               <h1 style={styles.loginTitleHero}>Catálogo<br /><span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             <div style={styles.loginRight}>
-              <div style={styles.loginCard}>
-                <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
-                <div style={styles.inputWrap}>
-                  <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
-                  <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
+              <div style={{ width: "100%", maxWidth: "440px" }}>
+                <div style={styles.loginCard}>
+                  <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
+                  <div style={styles.inputWrap}>
+                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
+                    <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
+                  </div>
+                  {error && <div style={styles.errorText}>{error}</div>}
+                  <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
                 </div>
-                {error && <div style={styles.errorText}>{error}</div>}
-                
-                {/* BOTÃO PRINCIPAL */}
-                <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
-                
-                {/* BOTÃO DA CALCULADORA ADICIONADO ABAIXO */}
-                <a 
-                  href="https://calculadorapeps.onrender.com/" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  style={styles.calcButton}
-                >
-                  CALCULADORA DE DOSAGEM
-                </a>
-                
+
+                {/* BOTÃO FORA DO QUADRO E AZUL */}
+                <div style={{ marginTop: "40px", display: "flex", justifyContent: "center" }}>
+                  <a 
+                    href="https://calculadorapeps.onrender.com/" 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    style={styles.calcButtonLogin}
+                  >
+                    CALCULADORA DE DOSAGEM
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -258,7 +259,7 @@ const getStyles = (isMobile) => ({
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  loginRight: { flex: 1, display: "flex", justifyContent: "center", width: "100%", maxWidth: "440px" },
+  loginRight: { flex: 1, display: "flex", justifyContent: "center", width: "100%" },
   loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" },
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 35 },
   lockBox: { fontSize: "32px" },
@@ -269,24 +270,24 @@ const getStyles = (isMobile) => ({
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
   
-  // ESTILO DO BOTÃO DA CALCULADORA
-  calcButton: { 
-    display: "flex", 
+  // NOVO ESTILO: BOTÃO DA CALCULADORA FORA DO CARD
+  calcButtonLogin: { 
+    display: "inline-flex", 
     alignItems: "center", 
     justifyContent: "center", 
-    width: "100%", 
-    height: 50, 
-    marginTop: "12px", 
-    borderRadius: 16, 
-    background: "rgba(255, 255, 255, 0.05)", 
-    color: "#94a3b8", 
-    fontWeight: 600, 
+    padding: "0 30px",
+    height: 54, 
+    borderRadius: "50px", 
+    background: "rgba(0, 122, 204, 0.15)", 
+    color: "#00b4d8", 
+    fontWeight: 700, 
     cursor: "pointer", 
-    border: "1px solid rgba(255, 255, 255, 0.1)", 
-    fontSize: 12, 
-    letterSpacing: "1px", 
+    border: "1px solid rgba(0, 180, 216, 0.3)", 
+    fontSize: "12px", 
+    letterSpacing: "2px", 
     textDecoration: "none",
-    transition: "0.2s"
+    transition: "0.3s",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
   },
 
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
