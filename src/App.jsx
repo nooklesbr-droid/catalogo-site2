@@ -29,7 +29,7 @@ const databaseSecreto = [
       { name: "JOEL (CHARME PERFUMERIA)", phone: "+595 985 689923", notes: "Charme Perfumes" },
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
       { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
-      { name: "CINTHIA (EL KILLO)", phone: "+595 994 812498", notes: "Especialista" },
+      { name: "CINTHIA (EL KILLO)", phone: "+594 812 498", notes: "Especialista" },
       { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
   },
@@ -66,7 +66,7 @@ const databaseSecreto = [
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
       { name: "ALEE ATACADO", phone: "+595 994 998866", notes: "Hormônios e performance" },
       { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
-      { name: "CINTHIA (EL KILLO)", phone: "+595 994 812498", notes: "Especialista" },
+      { name: "CINTHIA (EL KILLO)", phone: "+594 812 498", notes: "Especialista" },
       { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
   },
@@ -157,8 +157,10 @@ export default function App() {
               <div style={styles.loginSmallHero}>ACESSO RESTRITO • 2026</div>
               <h1 style={styles.loginTitleHero}>Catálogo<br /><span style={styles.textGradientHero}>VIP</span></h1>
             </div>
-            {/* AJUSTE NA COLUNA DA DIREITA PARA ALINHAMENTO VERTICAL CENTRALIZADO */}
+            
             <div style={styles.loginRight}>
+              {/* O CARD E O BOTÃO ESTÃO DENTRO DESTE BLOCO COM LARGURA FIXA */}
+              <div style={{ width: "100%", maxWidth: "440px", display: "flex", flexDirection: "column", gap: "25px" }}>
                 <div style={styles.loginCard}>
                   <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
                   <div style={styles.inputWrap}>
@@ -177,6 +179,7 @@ export default function App() {
                 >
                   CALCULADORA DE DOSAGEM
                 </a>
+              </div>
             </div>
           </div>
         </div>
@@ -255,11 +258,8 @@ const getStyles = (isMobile) => ({
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  
-  // LOGIN RIGHT: Agora garante que tudo dentro dele seja uma coluna centralizada
-  loginRight: { flex: 1, display: "flex", flexDirection: "column", alignItems: "center", width: "100%", maxWidth: "440px" },
-  
-  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)", marginBottom: "30px" },
+  loginRight: { flex: 1, display: "flex", justifyContent: isMobile ? "center" : "flex-start", width: "100%" },
+  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)", margin: 0 },
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 35 },
   lockBox: { fontSize: "32px" },
   loginTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#fff" },
@@ -269,25 +269,24 @@ const getStyles = (isMobile) => ({
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
   
-  // BOTÃO DA CALCULADORA: Removi margens fixas estranhas para ele se alinhar ao centro do loginRight
+  // ESTILO AJUSTADO: width 100% para ocupar a mesma largura lateral do card
   calcButtonLogin: { 
     display: "flex", 
     alignItems: "center", 
     justifyContent: "center", 
-    padding: "0 30px",
+    width: "100%", 
     height: 54, 
-    borderRadius: "50px", 
-    background: "rgba(0, 122, 204, 0.15)", 
+    borderRadius: "16px", 
+    background: "rgba(0, 180, 216, 0.05)", 
     color: "#00b4d8", 
     fontWeight: 700, 
     cursor: "pointer", 
-    border: "1px solid rgba(0, 180, 216, 0.3)", 
+    border: "1px solid rgba(0, 180, 216, 0.2)", 
     fontSize: "12px", 
-    letterSpacing: "2px", 
+    letterSpacing: "1px", 
     textDecoration: "none",
     transition: "0.3s",
-    boxShadow: "0 10px 20px rgba(0,0,0,0.2)",
-    textAlign: "center"
+    boxSizing: "border-box"
   },
 
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
