@@ -160,43 +160,36 @@ export default function App() {
               <h1 style={styles.loginTitleHero}>Catálogo<br /><span style={styles.textGradientHero}>VIP</span></h1>
             </div>
             
-            <div style={styles.loginRight}>
-              <div style={styles.loginCard}>
-                <div style={styles.loginHeader}>
-                    <div style={styles.lockBox}>🔑</div>
-                    <h2 style={styles.loginTitle}>Autenticação</h2>
-                </div>
-                <div style={styles.inputWrap}>
-                  <input 
-                    type={showPassword ? "text" : "password"} 
-                    value={password} 
-                    onChange={(e) => setPassword(e.target.value)} 
-                    onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
-                    placeholder="Senha" 
-                    style={styles.input} 
-                  />
-                  <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
-                </div>
-                {error && <div style={styles.errorText}>{error}</div>}
-                <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
-              </div>
+            <div style={styles.loginRightContainer}>
+               <div style={styles.loginCard}>
+                  <div style={styles.loginHeader}>
+                      <div style={styles.lockBox}>🔑</div>
+                      <h2 style={styles.loginTitle}>Autenticação</h2>
+                  </div>
+                  <div style={styles.inputWrap}>
+                    <input 
+                      type={showPassword ? "text" : "password"} 
+                      value={password} 
+                      onChange={(e) => setPassword(e.target.value)} 
+                      onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
+                      placeholder="Senha" 
+                      style={styles.input} 
+                    />
+                    <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
+                  </div>
+                  {error && <div style={styles.errorText}>{error}</div>}
+                  <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
+               </div>
 
-              <a 
-                href="https://calculadorapept.onrender.com/" 
-                target="_blank" 
-                rel="noreferrer" 
-                style={styles.calcButtonLogin}
-              >
-                CALCULADORA DE DOSAGEM
-              </a>
+               <a href="https://calculadorapept.onrender.com/" target="_blank" rel="noreferrer" style={styles.calcButtonLogin}>
+                  CALCULADORA DE DOSAGEM
+               </a>
             </div>
           </div>
         </div>
       </div>
     );
   }
-
-  const isSearching = search.trim().length > 0;
 
   return (
     <div style={styles.page}>
@@ -213,20 +206,20 @@ export default function App() {
           </div>
         </header>
 
-        {!isSearching && (
+        {!(search.trim().length > 0) && (
           <nav style={styles.tabNavContainer}>
-            <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+            <div style={styles.tabGroup}>{shops.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.title}</span></button>))}</div>
             <div style={styles.divider} />
-            <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.icon}</span><span>{s.title}</span></button>))}</div>
+            <div style={styles.tabGroup}>{shipping.map(s => (<button key={s.id} onClick={() => setActiveTab(s.id)} style={{...styles.tabButton, ...(activeTab === s.id ? styles.tabButtonActive : {})}}><span>{s.title}</span></button>))}</div>
           </nav>
         )}
 
         <main style={styles.mainContent}>
-          {(activeTab || isSearching) ? (
+          {(activeTab || (search.trim().length > 0)) ? (
             <section style={styles.sectionCard}>
               <div style={styles.sectionHeader}>
                 <h2 style={styles.sectionTitle}>
-                  {isSearching ? "🔍 Resultados da Pesquisa" : databaseSecreto.find(s => s.id === activeTab)?.title}
+                  {(search.trim().length > 0) ? "🔍 Resultados da Pesquisa" : databaseSecreto.find(s => s.id === activeTab)?.title}
                 </h2>
                 <span style={styles.recordsPill}>{displayItems.length} REGISTROS</span>
               </div>
@@ -245,9 +238,6 @@ export default function App() {
                     <div style={{...styles.cell, flex: 1.6}}><div style={styles.noteCell}>{item.notes}</div></div>
                   </div>
                 ))}
-                {displayItems.length === 0 && (
-                  <div style={{ padding: "40px", textAlign: "center", color: "#64748b" }}>Nenhum contato encontrado para "{search}".</div>
-                )}
               </div>
             </section>
           ) : (
@@ -260,71 +250,82 @@ export default function App() {
 }
 
 const getStyles = (isMobile) => ({
-  page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column", boxSizing: "border-box" },
-  loginCenterContainer: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "20px", boxSizing: "border-box" },
-  loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", gap: isMobile ? "40px" : "60px", width: "100%", maxWidth: "1200px" },
-  loginLeft: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", textAlign: isMobile ? "center" : "left" },
+  page: { 
+    minHeight: "100vh", 
+    color: "#e2e8f0", 
+    fontFamily: "'Segoe UI', sans-serif", 
+    background: "#0a0f16", 
+    backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", 
+    display: "flex", 
+    flexDirection: "column", 
+    boxSizing: "border-box" 
+  },
+  loginCenterContainer: { 
+    flex: 1, 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "center", // Centraliza o bloco todo na tela
+    width: "100%", 
+    padding: "20px" 
+  },
+  loginContentBox: { 
+    display: "flex", 
+    flexDirection: isMobile ? "column" : "row",
+    alignItems: "center", 
+    justifyContent: "center", // Garante que não sobre espaço nas pontas
+    width: "fit-content", // Ocupa apenas o necessário para os dois elementos
+    gap: isMobile ? "40px" : "80px", 
+    margin: "0 auto" 
+  },
+  loginLeft: { 
+    textAlign: isMobile ? "center" : "left",
+    flexShrink: 0
+  },
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
-  loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
+  loginTitleHero: { margin: 0, fontSize: isMobile ? "54px" : "100px", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  
-  // CORREÇÃO AQUI: Alinhamento vertical e centralização
-  loginRight: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", justifyContent: "center", gap: "20px", width: "100%", maxWidth: "440px" },
-  
-  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "40px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" },
+  loginRightContainer: { 
+    display: "flex", 
+    flexDirection: "column", 
+    gap: "20px", 
+    width: "380px", // Largura fixa do card
+    flexShrink: 0
+  },
+  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 24, padding: "40px", backdropFilter: "blur(20px)", boxShadow: "0 20px 40px rgba(0,0,0,0.4)", boxSizing: "border-box" },
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 30 },
   lockBox: { fontSize: "32px" },
   loginTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#fff" },
   inputWrap: { position: "relative", marginBottom: "15px" },
-  input: { width: "100%", height: 56, borderRadius: 16, border: "1px solid rgba(255, 255, 255, 0.1)", background: "rgba(15, 23, 42, 0.8)", color: "#fff", padding: "0 18px", outline: "none", fontSize: 16, boxSizing: "border-box" },
+  input: { width: "100%", height: 56, borderRadius: 12, border: "1px solid rgba(255, 255, 255, 0.1)", background: "rgba(15, 23, 42, 0.8)", color: "#fff", padding: "0 18px", outline: "none", fontSize: 16, boxSizing: "border-box" },
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
-  primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
-  
-  calcButtonLogin: { 
-    display: "flex", 
-    alignItems: "center", 
-    justifyContent: "center", 
-    width: "100%", 
-    height: 54, 
-    borderRadius: "16px", 
-    background: "rgba(30, 41, 59, 0.3)", 
-    color: "#00b4d8", 
-    fontWeight: 700, 
-    cursor: "pointer", 
-    border: "1px solid rgba(0, 180, 216, 0.2)", 
-    fontSize: "12px", 
-    letterSpacing: "1px", 
-    textDecoration: "none",
-    transition: "0.3s",
-    boxSizing: "border-box"
-  },
-
-  appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
-  heroPanel: { marginBottom: 30, width: "100%" },
+  primaryButton: { width: "100%", height: 56, borderRadius: 12, background: "#00b4d8", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
+  calcButtonLogin: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: 50, borderRadius: "12px", background: "rgba(15, 23, 42, 0.5)", color: "#00b4d8", fontWeight: 600, cursor: "pointer", border: "1px solid rgba(0, 180, 216, 0.2)", fontSize: "12px", textDecoration: "none", boxSizing: "border-box" },
+  appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: "40px 0" },
+  heroPanel: { marginBottom: 30 },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
   heroPanelSmall: { color: "#64748b", fontSize: 10, fontWeight: 800, letterSpacing: "2px", marginBottom: 10 },
-  heroPanelTitle: { margin: 0, fontSize: isMobile ? "32px" : "44px", fontWeight: 800, letterSpacing: "-1px" },
-  searchCard: { flex: isMobile ? "1 1 100%" : "0 1 400px" },
-  tabNavContainer: { display: "flex", flexDirection: "column", gap: "12px", marginBottom: "35px", width: "100%" },
-  tabGroup: { display: "flex", flexWrap: "wrap", gap: "10px", justifyContent: isMobile ? "center" : "flex-start" },
-  divider: { height: "1px", background: "rgba(0, 122, 204, 0.2)", margin: "8px 0" },
-  tabButton: { padding: "10px 16px", borderRadius: "10px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", display: "flex", alignItems: "center", gap: 8, fontWeight: 600, fontSize: "13px", transition: "0.2s" },
-  tabButtonActive: { background: "rgba(0, 122, 204, 0.2)", border: "1px solid #007acc", color: "#fff", boxShadow: "0 0 15px rgba(0, 122, 204, 0.2)" },
+  heroPanelTitle: { margin: 0, fontSize: isMobile ? "32px" : "44px", fontWeight: 800 },
+  searchCard: { flex: isMobile ? "1 1 100%" : "0 1 350px" },
+  tabNavContainer: { display: "flex", flexDirection: "column", gap: "10px", marginBottom: "30px" },
+  tabGroup: { display: "flex", flexWrap: "wrap", gap: "8px" },
+  divider: { height: "1px", background: "rgba(255, 255, 255, 0.05)", margin: "5px 0" },
+  tabButton: { padding: "8px 16px", borderRadius: "8px", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", color: "#94a3b8", cursor: "pointer", fontSize: "13px", fontWeight: 600 },
+  tabButtonActive: { background: "rgba(0, 180, 216, 0.15)", border: "1px solid #00b4d8", color: "#fff" },
   mainContent: { width: "100%" },
-  sectionCard: { background: "rgba(30, 41, 59, 0.15)", borderRadius: 30, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)", width: "100%", boxSizing: "border-box" },
-  sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, padding: "0 10px" },
-  sectionTitle: { margin: 0, fontSize: "20px", fontWeight: 700, color: "#fff" },
-  recordsPill: { fontSize: 10, fontWeight: 800, color: "#64748b" },
-  tableWrap: { width: "100%", display: "flex", flexDirection: "column", overflow: "hidden" },
-  tableHead: { display: isMobile ? "none" : "flex", padding: "15px 25px", background: "rgba(255,255,255,0.02)", color: "#00b4d8", fontWeight: 800, fontSize: 11, letterSpacing: "1px", borderRadius: "12px", marginBottom: "10px" },
-  tableRowBody: { display: "flex", flexDirection: isMobile ? "column" : "row", padding: isMobile ? "20px" : "15px 25px", borderBottom: "1px solid rgba(255, 255, 255, 0.03)", gap: isMobile ? 12 : 0, alignItems: "center", width: "100%", boxSizing: "border-box" },
-  cell: { display: "flex", alignItems: "center", overflow: "hidden" },
-  idx: { color: "#00b4d8", opacity: 0.5, fontWeight: 700 },
-  nameCell: { color: "#fff", fontWeight: 600, fontSize: "15px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  whatsappLink: { textDecoration: "none", color: "#00b4d8", background: "rgba(0, 180, 216, 0.1)", padding: "8px 15px", borderRadius: "8px", fontWeight: 700, fontSize: "14px", border: "1px solid rgba(0, 180, 216, 0.2)", whiteSpace: "nowrap" },
-  noteCell: { color: "#94a3b8", fontSize: 13, fontStyle: "italic", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" },
-  emptyStateContainer: { display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "80px 20px", textAlign: "center" },
-  emptyIcon: { fontSize: "50px", marginBottom: "15px", opacity: 0.4 },
-  emptyTitle: { color: "#fff", fontSize: "20px", margin: 0 }
+  sectionCard: { background: "rgba(30, 41, 59, 0.2)", borderRadius: 20, padding: isMobile ? "15px" : "25px", border: "1px solid rgba(255, 255, 255, 0.05)" },
+  sectionHeader: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20 },
+  sectionTitle: { margin: 0, fontSize: "18px", color: "#fff" },
+  recordsPill: { fontSize: 10, color: "#64748b" },
+  tableWrap: { width: "100%", display: "flex", flexDirection: "column" },
+  tableHead: { display: isMobile ? "none" : "flex", padding: "10px 20px", color: "#00b4d8", fontWeight: 800, fontSize: 11, background: "rgba(255,255,255,0.02)", borderRadius: "8px", marginBottom: "10px" },
+  tableRowBody: { display: "flex", flexDirection: isMobile ? "column" : "row", padding: "15px 20px", borderBottom: "1px solid rgba(255, 255, 255, 0.03)", alignItems: "center" },
+  cell: { display: "flex", alignItems: "center" },
+  idx: { color: "#00b4d8", opacity: 0.5 },
+  nameCell: { color: "#fff", fontWeight: 600 },
+  whatsappLink: { textDecoration: "none", color: "#00b4d8", background: "rgba(0, 180, 216, 0.1)", padding: "6px 12px", borderRadius: "6px", fontWeight: 700, fontSize: "13px" },
+  noteCell: { color: "#94a3b8", fontSize: 13 },
+  emptyStateContainer: { textAlign: "center", padding: "60px 0" },
+  emptyIcon: { fontSize: "40px", opacity: 0.3 },
+  emptyTitle: { color: "#64748b", fontSize: "16px" }
 });
