@@ -172,7 +172,7 @@ export default function App() {
                 </div>
 
                 <a 
-                  href="https://calculadorapeps.onrender.com/" 
+                  href="https://calculadorapept.onrender.com/" 
                   target="_blank" 
                   rel="noreferrer" 
                   style={styles.calcButtonLogin}
