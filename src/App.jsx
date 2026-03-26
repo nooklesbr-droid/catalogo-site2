@@ -182,7 +182,11 @@ export default function App() {
                </div>
 
                <a href="https://calculadorapept.onrender.com/" target="_blank" rel="noreferrer" style={styles.calcButtonLogin}>
-                  CALCULADORA DE DOSAGEM
+                  <span style={{ fontSize: "20px" }}>🧮</span>
+                  <div style={{ textAlign: "left" }}>
+                    <div style={{ fontSize: "11px", opacity: 0.7, fontWeight: 400 }}>Dificuldade com a seringa?</div>
+                    <div style={{ fontSize: "14px", fontWeight: 700 }}>CALCULAR DOSAGEM AGORA</div>
+                  </div>
                </a>
             </div>
           </div>
@@ -250,47 +254,14 @@ export default function App() {
 }
 
 const getStyles = (isMobile) => ({
-  page: { 
-    minHeight: "100vh", 
-    color: "#e2e8f0", 
-    fontFamily: "'Segoe UI', sans-serif", 
-    background: "#0a0f16", 
-    backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", 
-    display: "flex", 
-    flexDirection: "column", 
-    boxSizing: "border-box" 
-  },
-  loginCenterContainer: { 
-    flex: 1, 
-    display: "flex", 
-    alignItems: "center", 
-    justifyContent: "center", // Centraliza o bloco todo na tela
-    width: "100%", 
-    padding: "20px" 
-  },
-  loginContentBox: { 
-    display: "flex", 
-    flexDirection: isMobile ? "column" : "row",
-    alignItems: "center", 
-    justifyContent: "center", // Garante que não sobre espaço nas pontas
-    width: "fit-content", // Ocupa apenas o necessário para os dois elementos
-    gap: isMobile ? "40px" : "80px", 
-    margin: "0 auto" 
-  },
-  loginLeft: { 
-    textAlign: isMobile ? "center" : "left",
-    flexShrink: 0
-  },
+  page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column", boxSizing: "border-box" },
+  loginCenterContainer: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "20px" },
+  loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", width: "fit-content", gap: isMobile ? "40px" : "60px", margin: "0 auto" },
+  loginLeft: { textAlign: isMobile ? "center" : "left", flexShrink: 0 },
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "54px" : "100px", fontWeight: 800, lineHeight: 0.9, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  loginRightContainer: { 
-    display: "flex", 
-    flexDirection: "column", 
-    gap: "20px", 
-    width: "380px", // Largura fixa do card
-    flexShrink: 0
-  },
+  loginRightContainer: { display: "flex", flexDirection: "column", gap: "20px", width: "380px", flexShrink: 0 },
   loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.4)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 24, padding: "40px", backdropFilter: "blur(20px)", boxShadow: "0 20px 40px rgba(0,0,0,0.4)", boxSizing: "border-box" },
   loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 30 },
   lockBox: { fontSize: "32px" },
@@ -300,7 +271,27 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 56, borderRadius: 12, background: "#00b4d8", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
-  calcButtonLogin: { display: "flex", alignItems: "center", justifyContent: "center", width: "100%", height: 50, borderRadius: "12px", background: "rgba(15, 23, 42, 0.5)", color: "#00b4d8", fontWeight: 600, cursor: "pointer", border: "1px solid rgba(0, 180, 216, 0.2)", fontSize: "12px", textDecoration: "none", boxSizing: "border-box" },
+  
+  // ESTILO DO BOTÃO DE CALCULADORA COM DESTAQUE
+  calcButtonLogin: { 
+    display: "flex", 
+    alignItems: "center", 
+    justifyContent: "flex-start", 
+    gap: "15px",
+    width: "100%", 
+    height: "75px", 
+    borderRadius: "20px", 
+    background: "rgba(0, 180, 216, 0.1)", 
+    color: "#00b4d8", 
+    padding: "0 25px",
+    cursor: "pointer", 
+    border: "2px solid rgba(0, 180, 216, 0.3)", 
+    textDecoration: "none",
+    boxSizing: "border-box",
+    transition: "all 0.3s ease",
+    boxShadow: "0 10px 20px rgba(0,0,0,0.2)"
+  },
+
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: "40px 0" },
   heroPanel: { marginBottom: 30 },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
