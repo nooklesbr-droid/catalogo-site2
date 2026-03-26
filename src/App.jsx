@@ -28,7 +28,7 @@ const databaseSecreto = [
       { name: "CINDY (PONTOCOM)", phone: "+595 981 365607", notes: "Geral" },
       { name: "JOEL (CHARME PERFUMERIA)", phone: "+595 985 689923", notes: "Charme Perfumes" },
       { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
-      { name: "CHARLES (EL KILLO)", phone: "+595 973 836653", notes: "Especialista" },
+      { name: "CHARLES (EL KILLO)", phone: "+593 836 653", notes: "Especialista" },
       { name: "CINTHIA (EL KILLO)", phone: "+594 812 498", notes: "Especialista" },
       { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
     ],
@@ -83,9 +83,11 @@ const databaseSecreto = [
     type: "shipping",
     title: "Freteiros (Indicação Fernando)",
     items: [
+      { name: "ANDERSON", phone: "+55 45 9109-4135", notes: "Freteiro" },
+      { name: "PAULO FRETEIRO", phone: "+55 41 9930-1081", notes: "Novo Freteiro" },
+      { name: "JOHNNY FERNANDO", phone: "+55 45 9904-7330", notes: "Indicação Fernando" },
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
       { name: "JU RIBEIRO", phone: "+595 993 045009", notes: "Indicação Fernando" },
-      { name: "JOHNNY", phone: "+55 45 9904-7330", notes: "Indicação Fernando" },
       { name: "ANTÔNIO", phone: "+1 (407) 574-1627", notes: "Indicação Fernando" },
     ],
   },
@@ -109,7 +111,7 @@ export default function App() {
   const [showPassword, setShowPassword] = useState(false);
   const [activeTab, setActiveTab] = useState(null);
 
-  const dataAtualizacao = "24/03/2026";
+  const dataAtualizacao = "25/03/2026";
 
   async function handleLogin() {
     if (password === SENHA_REAL) {
@@ -159,7 +161,6 @@ export default function App() {
             </div>
             
             <div style={styles.loginRight}>
-              {/* O CARD E O BOTÃO ESTÃO DENTRO DESTE BLOCO COM LARGURA FIXA */}
               <div style={{ width: "100%", maxWidth: "440px", display: "flex", flexDirection: "column", gap: "25px" }}>
                 <div style={styles.loginCard}>
                   <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
@@ -268,8 +269,6 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
-  
-  // ESTILO AJUSTADO: width 100% para ocupar a mesma largura lateral do card
   calcButtonLogin: { 
     display: "flex", 
     alignItems: "center", 
@@ -288,7 +287,6 @@ const getStyles = (isMobile) => ({
     transition: "0.3s",
     boxSizing: "border-box"
   },
-
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
   heroPanel: { marginBottom: 30, width: "100%" },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
