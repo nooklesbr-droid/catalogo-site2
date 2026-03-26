@@ -161,26 +161,34 @@ export default function App() {
             </div>
             
             <div style={styles.loginRight}>
-              <div style={{ width: "100%", maxWidth: "440px", display: "flex", flexDirection: "column", gap: "25px" }}>
-                <div style={styles.loginCard}>
-                  <div style={styles.loginHeader}><div style={styles.lockBox}>🔑</div><h2 style={styles.loginTitle}>Autenticação</h2></div>
-                  <div style={styles.inputWrap}>
-                    <input type={showPassword ? "text" : "password"} value={password} onChange={(e) => setPassword(e.target.value)} onKeyDown={(e) => e.key === "Enter" && handleLogin()} placeholder="Senha" style={styles.input} />
-                    <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
-                  </div>
-                  {error && <div style={styles.errorText}>{error}</div>}
-                  <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
+              <div style={styles.loginCard}>
+                <div style={styles.loginHeader}>
+                    <div style={styles.lockBox}>🔑</div>
+                    <h2 style={styles.loginTitle}>Autenticação</h2>
                 </div>
-
-                <a 
-                  href="https://calculadorapept.onrender.com/" 
-                  target="_blank" 
-                  rel="noreferrer" 
-                  style={styles.calcButtonLogin}
-                >
-                  CALCULADORA DE DOSAGEM
-                </a>
+                <div style={styles.inputWrap}>
+                  <input 
+                    type={showPassword ? "text" : "password"} 
+                    value={password} 
+                    onChange={(e) => setPassword(e.target.value)} 
+                    onKeyDown={(e) => e.key === "Enter" && handleLogin()} 
+                    placeholder="Senha" 
+                    style={styles.input} 
+                  />
+                  <button onClick={() => setShowPassword(!showPassword)} style={styles.eyeButton}>{showPassword ? "🙈" : "👁️"}</button>
+                </div>
+                {error && <div style={styles.errorText}>{error}</div>}
+                <button onClick={handleLogin} style={styles.primaryButton}>LIBERAR SISTEMA</button>
               </div>
+
+              <a 
+                href="https://calculadorapept.onrender.com/" 
+                target="_blank" 
+                rel="noreferrer" 
+                style={styles.calcButtonLogin}
+              >
+                CALCULADORA DE DOSAGEM
+              </a>
             </div>
           </div>
         </div>
@@ -254,14 +262,17 @@ export default function App() {
 const getStyles = (isMobile) => ({
   page: { minHeight: "100vh", color: "#e2e8f0", fontFamily: "'Segoe UI', sans-serif", background: "#0a0f16", backgroundImage: "radial-gradient(circle at 50% -20%, #1e293b 0%, #0a0f16 100%)", display: "flex", flexDirection: "column", boxSizing: "border-box" },
   loginCenterContainer: { flex: 1, display: "flex", alignItems: "center", justifyContent: "center", width: "100%", padding: "20px", boxSizing: "border-box" },
-  loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", gap: isMobile ? "40px" : "100px", width: "100%", maxWidth: "1200px" },
-  loginLeft: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", textAlign: isMobile ? "center" : "left", maxWidth: "500px" },
+  loginContentBox: { display: "flex", flexDirection: isMobile ? "column" : "row", alignItems: "center", justifyContent: "center", gap: isMobile ? "40px" : "60px", width: "100%", maxWidth: "1200px" },
+  loginLeft: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", textAlign: isMobile ? "center" : "left" },
   loginSmallHero: { color: "#64748b", fontSize: 12, fontWeight: 700, textTransform: "uppercase", letterSpacing: "4px", marginBottom: 15 },
   loginTitleHero: { margin: 0, fontSize: isMobile ? "50px" : "110px", fontWeight: 800, lineHeight: 0.85, letterSpacing: "-4px" },
   textGradientHero: { background: "linear-gradient(90deg, #007acc, #00b4d8)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" },
-  loginRight: { flex: 1, display: "flex", justifyContent: isMobile ? "center" : "flex-start", width: "100%" },
-  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "50px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)", margin: 0 },
-  loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 35 },
+  
+  // CORREÇÃO AQUI: Alinhamento vertical e centralização
+  loginRight: { flex: 1, display: "flex", flexDirection: "column", alignItems: isMobile ? "center" : "flex-start", justifyContent: "center", gap: "20px", width: "100%", maxWidth: "440px" },
+  
+  loginCard: { width: "100%", background: "rgba(30, 41, 59, 0.5)", border: "1px solid rgba(255, 255, 255, 0.05)", borderRadius: 32, padding: isMobile ? "30px 20px" : "40px", backdropFilter: "blur(20px)", boxShadow: "0 25px 50px -12px rgba(0,0,0,0.5)" },
+  loginHeader: { display: "flex", flexDirection: "column", alignItems: "center", gap: 10, marginBottom: 30 },
   lockBox: { fontSize: "32px" },
   loginTitle: { margin: 0, fontSize: 24, fontWeight: 700, color: "#fff" },
   inputWrap: { position: "relative", marginBottom: "15px" },
@@ -269,6 +280,7 @@ const getStyles = (isMobile) => ({
   eyeButton: { position: "absolute", right: 15, top: "50%", transform: "translateY(-50%)", background: "none", border: "none", cursor: "pointer", fontSize: 20 },
   errorText: { color: "#fb7185", fontSize: 13, textAlign: "center", fontWeight: 600, marginBottom: "15px" },
   primaryButton: { width: "100%", height: 60, borderRadius: 16, background: "linear-gradient(90deg, #007acc, #00b4d8)", color: "#fff", fontWeight: 700, cursor: "pointer", border: "none", fontSize: 14, letterSpacing: "1px" },
+  
   calcButtonLogin: { 
     display: "flex", 
     alignItems: "center", 
@@ -276,7 +288,7 @@ const getStyles = (isMobile) => ({
     width: "100%", 
     height: 54, 
     borderRadius: "16px", 
-    background: "rgba(0, 180, 216, 0.05)", 
+    background: "rgba(30, 41, 59, 0.3)", 
     color: "#00b4d8", 
     fontWeight: 700, 
     cursor: "pointer", 
@@ -287,6 +299,7 @@ const getStyles = (isMobile) => ({
     transition: "0.3s",
     boxSizing: "border-box"
   },
+
   appContainer: { width: "95%", maxWidth: "1100px", margin: "0 auto", padding: isMobile ? "20px 0" : "40px 0", boxSizing: "border-box" },
   heroPanel: { marginBottom: 30, width: "100%" },
   heroGrid: { display: "flex", flexWrap: "wrap", justifyContent: "space-between", alignItems: "flex-end", gap: 20 },
