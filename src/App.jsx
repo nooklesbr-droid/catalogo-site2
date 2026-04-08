@@ -89,7 +89,6 @@ const databaseSecreto = [
     items: [
       { name: "ANDERSON", phone: "+55 45 9109-4135", notes: "Freteiro" },
       { name: "PAULO FRETEIRO", phone: "+55 41 9930-1081", notes: "Novo Freteiro" },
-      { name: "JOHNNY FERNANDO", phone: "+55 45 9904-7330", notes: "Indicação Fernando" },
       { name: "DENISE FRETEIRA", phone: "+55 11 95722-2547", notes: "Indicação Fernando" },
       { name: "ANTÔNIO", phone: "+1 (407) 574-1627", notes: "Indicação Fernando" },
       { name: "TIRZEFARMA", phone: "+595 992 171856", notes: "Freteiro" },
