@@ -104,7 +104,7 @@ const databaseSecreto = [
     type: "shop",
     title: "Estoque SP",
     items: [
-      { name: "RODRIGO ZPHARMA", phone: "+595 973 183828", notes: "Estoque em São Paulo" },
+      { name: "RODRIGO ZPHARMA", phone: "+595 976 876430", notes: "Estoque em São Paulo" },
       { name: "DRA.", phone: "+55 11 94751-2328", notes: "Fornecedor São Paulo" },
     ],
   },
