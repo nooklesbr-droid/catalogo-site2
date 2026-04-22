@@ -27,10 +27,34 @@ const databaseSecreto = [
       { name: "PERFUMARIA PARAGUAI", phone: "+595 992 279951", notes: "Geral" },
       { name: "CINDY (PONTOCOM)", phone: "+595 981 365607", notes: "Geral" },
       { name: "JOEL (CHARME PERFUMERIA)", phone: "+595 985 689923", notes: "Charme Perfumes" },
-      { name: "RODRIGO (EL KILLO)", phone: "+595 993 324431", notes: "Especialista" },
+      { name: "RODRIGO (EL KILLO)", phone: "+593 993 324431", notes: "Especialista" },
       { name: "CHARLES (EL KILLO)", phone: "+593 836 653", notes: "Especialista" },
       { name: "CINTHIA (EL KILLO)", phone: "+594 812 498", notes: "Especialista" },
       { name: "JAC. (EL KILLO)", phone: "+55 21 99338-8704", notes: "Especialista" },
+      { name: "CELESTE MACEDONIA", phone: "+595 976 969999", notes: "Geral" },
+    ],
+  },
+  {
+    id: "eletronicos",
+    type: "shop",
+    title: "Eletrônicos",
+    items: [
+      { name: "AIDE ATACADO CONNECT 333", phone: "+595 984 280444", notes: "Eletrônicos" },
+      { name: "PAOLA MEGA", phone: "+595 991 719482", notes: "Eletrônicos" },
+      { name: "VANESSA ATLANTICO SHOP", phone: "+595 974 560956", notes: "Eletrônicos" },
+      { name: "NORMA IPHONE BESTSHOP", phone: "+595 992 908371", notes: "iPhones e Geral" },
+      { name: "PERLA MEGA", phone: "+595 983 262366", notes: "Eletrônicos" },
+      { name: "ROSA PAEZ ATACADO CONNECT", phone: "+595 981 686916", notes: "Eletrônicos" },
+      { name: "BLAS MEGA CELL", phone: "+595 992 797759", notes: "Celulares e Eletrônicos" },
+    ],
+  },
+  {
+    id: "vapes",
+    type: "shop",
+    title: "Vapes e Pods",
+    items: [
+      { name: "FÁTIMA EPIC VAPE SHOP", phone: "+595 985 842998", notes: "Vapes" },
+      { name: "TOTAL VAPE - LIZ", phone: "+595 987 139304", notes: "Pods e Vapes" },
     ],
   },
   {
@@ -57,6 +81,7 @@ const databaseSecreto = [
       { name: "SPACE 2", phone: "+595 986 236942", notes: "Fornecedor Farmácia" },
       { name: "FARMAUTIL BODY FACTORY 3", phone: "+595 994 365202", notes: "Fornecedor Farmácia" },
       { name: "FARMAUTIL - BODY FACTORY", phone: "+595 995 664468", notes: "Fornecedor Farmácia" },
+      { name: "ANA CÁCERES FARMÁCIA", phone: "+595 983 689419", notes: "Farmácia" },
     ],
   },
   {
@@ -80,6 +105,7 @@ const databaseSecreto = [
     title: "Estoque SP",
     items: [
       { name: "RODRIGO ZPHARMA", phone: "+595 973 183828", notes: "Estoque em São Paulo" },
+      { name: "DRA.", phone: "+55 11 94751-2328", notes: "Fornecedor São Paulo" },
     ],
   },
   {
